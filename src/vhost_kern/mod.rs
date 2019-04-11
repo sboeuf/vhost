@@ -27,6 +27,9 @@ use crate::backend::{
 pub mod vhost_binding;
 use self::vhost_binding::*;
 
+#[cfg(feature = "vhost-vsock")]
+pub mod vsock;
+
 fn ioctl_error<T>() -> Result<T> {
     Err(Error::IoctlError(std::io::Error::last_os_error()))
 }
