@@ -8,7 +8,10 @@ license = "Apache-2.0 or MIT"
 [features]
 default = []
 vhost-vsock = []
+vhost-kern = ["vm-memory"]
 
 [dependencies]
+libc = ">=0.2.39"
+
 vmm-sys-util = { git = "https://github.com/liujing2/vmm-sys-util.git" }
 vm-memory = { git = "https://github.com/jiangliu/vm-memory.git", branch = "v4", optional = true }
