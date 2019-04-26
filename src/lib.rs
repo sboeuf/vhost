@@ -31,6 +31,11 @@
 
 #![deny(missing_docs)]
 
+#[cfg_attr(
+    any(feature = "vhost-user-master", feature = "vhost-user-slave"),
+    macro_use
+)]
+extern crate bitflags;
 extern crate libc;
 #[cfg(feature = "vhost-kern")]
 extern crate vm_memory;
@@ -40,5 +45,7 @@ extern crate vmm_sys_util;
 pub mod backend;
 #[cfg(feature = "vhost-kern")]
 pub mod vhost_kern;
+#[cfg(any(feature = "vhost-user-master", feature = "vhost-user-slave"))]
+pub mod vhost_user;
 #[cfg(feature = "vhost-vsock")]
 pub mod vsock;
