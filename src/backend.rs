@@ -35,6 +35,9 @@ pub enum Error {
     VhostOpen(std::io::Error),
     /// Error while running ioctl.
     IoctlError(std::io::Error),
+    /// Error for vhost-user protocol
+    #[cfg(any(feature = "vhost-user-master", feature = "vhost-user-slave"))]
+    VhostUserProtocol(crate::vhost_user::Error),
 }
 
 /// Result of vHost operations

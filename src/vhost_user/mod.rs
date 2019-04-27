@@ -23,6 +23,11 @@
 
 pub mod message;
 
+mod connection;
+mod sock_ctrl_msg;
+
+use crate::backend::Error as BackendError;
+
 /// Error codes for vhost-user protocol
 #[derive(Debug)]
 pub enum Error {
@@ -30,6 +35,8 @@ pub enum Error {
     SocketError(std::io::Error),
     /// Failure when connecting to the slave
     ConnectFail(std::io::Error),
+    /// Error conditions from the sock_ctrl_msg library
+    SockCtrlMsgError(vmm_sys_util::Error),
     /// Fd array in question is too big or too small
     FdArrayCapacity,
     /// Message is too large
@@ -50,6 +57,18 @@ pub enum Error {
     OperationFailedInSlave,
     /// Error in Slave request handler
     SlaveReqHandlerError(Box<dyn std::error::Error>),
+}
+
+impl std::convert::From<vmm_sys_util::Error> for Error {
+    fn from(err: vmm_sys_util::Error) -> Self {
+        Error::SockCtrlMsgError(err)
+    }
+}
+
+impl std::convert::From<Error> for BackendError {
+    fn from(err: Error) -> BackendError {
+        BackendError::VhostUserProtocol(err)
+    }
 }
 
 /// Result of vhost-user operations
