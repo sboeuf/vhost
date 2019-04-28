@@ -28,6 +28,11 @@ mod sock_ctrl_msg;
 
 use crate::backend::Error as BackendError;
 
+#[cfg(feature = "vhost-user-master")]
+mod master;
+#[cfg(feature = "vhost-user-master")]
+pub use self::master::{Master, VhostUserMaster};
+
 /// Error codes for vhost-user protocol
 #[derive(Debug)]
 pub enum Error {
