@@ -32,6 +32,10 @@ use crate::backend::Error as BackendError;
 mod master;
 #[cfg(feature = "vhost-user-master")]
 pub use self::master::{Master, VhostUserMaster};
+#[cfg(feature = "vhost-user-master")]
+mod slave_req_handler;
+#[cfg(feature = "vhost-user-master")]
+pub use self::slave_req_handler::{SlaveReqHandler, VhostUserSlaveReqHandler};
 
 #[cfg(feature = "vhost-user-slave")]
 mod slave;
@@ -83,3 +87,6 @@ impl std::convert::From<Error> for BackendError {
 
 /// Result of vhost-user operations
 pub type Result<T> = std::result::Result<T, Error>;
+
+/// Result of request handler.
+pub type HandlerResult<T> = std::result::Result<T, Box<dyn std::error::Error>>;
