@@ -33,6 +33,11 @@ mod master;
 #[cfg(feature = "vhost-user-master")]
 pub use self::master::{Master, VhostUserMaster};
 
+#[cfg(feature = "vhost-user-slave")]
+mod slave;
+#[cfg(feature = "vhost-user-slave")]
+pub use self::slave::{Slave, SlaveListener, VhostUserSlave};
+
 /// Error codes for vhost-user protocol
 #[derive(Debug)]
 pub enum Error {
