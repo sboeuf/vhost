@@ -62,7 +62,7 @@ pub struct Master {
 
 impl Master {
     /// Create a new instance.
-    fn new(ep: Endpoint<MasterReq>) -> Self {
+    fn new(ep: Endpoint<MasterReq>, max_queue_num: u64) -> Self {
         Master {
             node: Arc::new(Mutex::new(MasterInternal {
                 main_sock: ep,
@@ -71,23 +71,23 @@ impl Master {
                 protocol_features: 0,
                 acked_protocol_features: 0,
                 protocol_features_ready: false,
-                max_queue_num: 1,
+                max_queue_num,
                 error: None,
             })),
         }
     }
 
     /// Create a new instance from a Unix stream socket.
-    pub fn from_stream(sock: UnixStream) -> Self {
-        Self::new(Endpoint::<MasterReq>::from_stream(sock))
+    pub fn from_stream(sock: UnixStream, max_queue_num: u64) -> Self {
+        Self::new(Endpoint::<MasterReq>::from_stream(sock), max_queue_num)
     }
 
     /// Create a new vhost-user master endpoint.
     ///
     /// # Arguments
     /// * `path` - path of Unix domain socket listener to connect to
-    pub fn connect(path: &str) -> Result<Self> {
-        Ok(Self::new(Endpoint::<MasterReq>::connect(path)?))
+    pub fn connect(path: &str, max_queue_num: u64) -> Result<Self> {
+        Ok(Self::new(Endpoint::<MasterReq>::connect(path)?, max_queue_num))
     }
 }
 
