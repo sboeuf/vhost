@@ -101,13 +101,13 @@ impl Master {
                             retry_count -= 1;
                             continue;
                         } else {
-                            break Err(e);
+                            return Err(e);
                         }
                     }
-                    _ => break Err(e),
+                    _ => return Err(e),
                 },
             }
-        }?;
+        };
 
         Ok(Self::new(endpoint, max_queue_num))
     }
